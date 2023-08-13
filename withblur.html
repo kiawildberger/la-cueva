@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<head>
+    <title>text game 23 (disco elysium inspired version)</title>
+</head>
+
+<body>
+    <div style="height:100%;">
+        <!-- <div class="blurbox"></div> -->
+        <!-- this blur box thing would ideally look Really Nice but it sucks bc chrome sucks so i Wont do it. maybe its cleaner like this anyway -->
+        <div class="panel">
+            <div class="choicearea">
+                <ol id="choices">
+                    <li id="begin" class="choice">Begin</li>
+                </ol>
+            </div>
+            <div id="textarea">
+                
+                <p style="animation: 0.2s ease 0s 1 normal none running slideup;">—</p>
+            <p style="animation: 0.2s ease 0s 1 normal none running slideup;">The end of summer closes in on you, and you're feeling
+                like you're missing something—it's been like this for weeks. You're not unhappy, but there's something that's been
+                bugging you since May. Last week you decided to relive some old memories, and you've finally got the
+                time.<br><br>You close your car door and it reverberates through the forest. You're on the side of a road, on a
+                small bridge crossing a creek. The road curves off into the distance but you're here for the remains of a trail that
+                you see leading towards the creek. It's approaching dusk.</p>
+            <p style="animation: 0.2s ease 0s 1 normal none running slideup;">Although there is meager space, the road seems quiet
+                and relatively safe. Staying as close to the edge as possible, you set
+                off—hoping the road takes you to your quarry faster than the trail.</p>
+            <p style="animation: 0.2s ease 0s 1 normal none running slideup;">Dusk approaches, and the road stays silent. Leaves
+                scatter and branches rustle in the wind, but the surrounding forest is as still—if not more so—than the road. You're
+                on the hunt for a mostly forgotten artifact of your childhood: a treehouse that you and your friends built over a
+                summer. You remember it so clearly you can almost see it, but you've since forgotten the exact location. You know
+                you're in the area, but it might take a few hours to find it.</p>
+            <p style="animation: 0.2s ease 0s 1 normal none running slideup;">Enjoying the evening, your feet fall on the asphalt
+                with pleasant taps.</p>
+            <p style="animation: 0.2s ease 0s 1 normal none running slideup;">It's almost like a scene from a dream. You veer into
+                the center of the road to hug the double yellow with your feet, you spread your arms out and look at the tree
+                canopies above you. The riparian forest does well intertwined with the redwoods, and the strong scent of bay tickles
+                your nose.</p>
+            <p style="animation: 0.2s ease 0s 1 normal none running slideup;">You could walk this road forever.</p>
+            <p>The whole view opens up—what was once a steep embankment rises to meet the road grade as a large field with a
+                stunning oak tree. The meadow dips into the forest, towards the creek you parked on top of. The receding sunlight
+                makes the grasses' long shadows sway across the road, almost intoxicatingly. The bay is mostly invisible; you can
+                even feel a slight drizzle from the incoming fog. The scene sparked your memory, and now you recognize some of the
+                landmarks you once knew so well. <i>This must be it,</i> you think.</p>
+            </div>
+        </div>
+    </div>
+
+    <svg height="0">
+        <mask id="mask-linear">
+            <rect width="100000" height="400" fill="url(#l1)"></rect>
+            <linearGradient id="l1" x1="0" y1="0" x2="0" y2="1">
+              <stop stop-color="white" offset="0%"/>
+              <stop stop-color="grey" offset="30%"/>
+              <stop stop-color="black" offset="100%"/>
+            </linearGradient>
+          </mask>
+          <filter id="filter2">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+          </filter>
+    </svg>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&family=EB+Garamond&display=swap');
+        body {
+            --choice-primary:skyblue;
+            --choice-hover:color-mix(in srgb, black 20%, var(--choice-primary));
+            --slide-height:0px;
+            background-color:#272727;
+            font-family:'EB Garamond';
+            font-size:20px;
+            overflow-x:hidden;
+        }
+        /* the scrollbar is ugly as hell but Apparently there is literally nothing i can do??? help */
+        /* also the blur thing looks like shit on chrome */
+        .panel {
+            max-height:70%;
+            width:30%;
+            /* border:2px solid black; */
+            margin:0 auto 0 auto;
+            /* padding-bottom:12px; */
+            display:flex;
+            overflow-y:auto;
+            overflow-x:hidden;
+            word-wrap:normal;
+            flex-direction:column-reverse;
+        }
+        .panel::after {
+            --after-width:32%;
+            z-index:-1;
+            position:absolute;
+            left:calc(50% - (var(--after-width) / 2));
+            content:'';
+            height:100%;
+            width:var(--after-width);
+            border:4px solid #181818;
+            border-radius:2px;
+            filter:blur(15px);
+        }
+        #textarea {
+            padding:0 8px 0 8px;
+            color:white;
+            /* margin-bottom:12px; */
+            line-height:1.6;
+            scrollbar-width:thin;
+            scrollbar-color:#222 #888;
+        }
+        .blurbox {
+            position:absolute;
+            top:0;
+            height:10%;
+            width:100%;
+            -webkit-mask: -webkit-linear-gradient(black, transparent 30%, black);
+            -webkit-mask: linear-gradient(black, transparent 30%, black);
+            backdrop-filter:blur(8px);
+            mask: url('#mask-linear');
+            filter: url('#filter2');
+        }
+        #textarea > p {
+            animation:newtext 0.2s ease;
+        }
+        @keyframes slideup {
+            from {
+                margin-bottom:0px;
+            }
+            to {
+                margin-bottom:var(--slide-height);
+            }
+        }
+        @keyframes newtext {
+            from {
+                filter:blur(1px);
+            }
+            to {
+                filter:blur(0px);
+            }
+        }
+        .choicearea {
+            /* border:1px solid black; */
+            margin:8px 0 32px 0;
+        }
+        #choices {
+            opacity:1;
+            transition:opacity 0.2s ease;
+        }
+        .choice {
+            cursor:pointer;
+            user-select:none;
+            margin-bottom:6px;
+            color:var(--choice-primary);
+        }
+        .choice:hover { color:var(--choice-hover); }
+    </style>
+    <script>
+        document.querySelector('.panel').style.height = window.innerHeight*.7+"px";
+        window.addEventListener("resize", () => document.querySelector('.panel').style.height = window.innerHeight*.7+"px")
+    </script>
+
+    <script src="./ingine.js" type="application/javascript"></script>
+    <script src="./game.js" type="application/javascript"></script>
+    <script src="./index.js" type="application/javascript"></script>
+</body>

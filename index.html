@@ -5,10 +5,12 @@
 
 <body>
     <div style="height:100%;">
+        <!-- <div class="blurbox"></div> -->
+        <!-- this blur box thing would ideally look Really Nice but it sucks bc chrome sucks so i Wont do it. maybe its cleaner like this anyway -->
         <div class="panel">
             <div class="choicearea">
                 <ol id="choices">
-                    <li id="begin">Begin</li>
+                    <li id="begin" class="choice">Begin</li>
                 </ol>
             </div>
             <div id="textarea">
@@ -21,12 +23,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&family=EB+Garamond&display=swap');
         body {
             --choice-primary:skyblue;
-            --choice-hover:color-mix(in srgb, black 20%, skyblue);
+            --choice-hover:color-mix(in srgb, black 20%, var(--choice-primary));
             --slide-height:0px;
             background-color:#272727;
             font-family:'EB Garamond';
             font-size:20px;
         }
+        /* the scrollbar is ugly as hell but Apparently there is literally nothing i can do??? help */
+        /* also the blur thing looks like shit on chrome */
         .panel {
             max-height:70%;
             width:30%;
@@ -47,18 +51,18 @@
             content:'';
             height:100%;
             width:var(--after-width);
-            border:4px solid #161616;
+            border:4px solid #181818;
             border-radius:2px;
-            filter:blur(6px);
+            filter:blur(15px);
         }
         #textarea {
             padding:0 8px 0 8px;
             color:white;
-            /* margin-bottom:12px; */
             line-height:1.6;
+            overflow-y:hidden; /* NO SCROLL FOR YOU */
         }
         #textarea > p {
-            /* animation:newtext 0.5s ease; */
+            animation:newtext 0.2s ease;
         }
         @keyframes slideup {
             from {
@@ -70,7 +74,7 @@
         }
         @keyframes newtext {
             from {
-                filter:blur(3px);
+                filter:blur(1px);
             }
             to {
                 filter:blur(0px);
@@ -83,15 +87,14 @@
         #choices {
             opacity:1;
             transition:opacity 0.2s ease;
-            border:1px solid white;
         }
-        #choices > li {
+        .choice {
             cursor:pointer;
             user-select:none;
             margin-bottom:6px;
             color:var(--choice-primary);
         }
-        #choices > li:hover { color:var(--choice-hover); }
+        .choice:hover { color:var(--choice-hover); }
     </style>
     <script>
         document.querySelector('.panel').style.height = window.innerHeight*.7+"px";

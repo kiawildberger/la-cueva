@@ -44,23 +44,24 @@ function run() {
     let { current } = ingine;
     // only the choices update if the location doesn't change
     if(current.name != gamelocation.name) showText(current.text.replace(/\t|\n/g, ''))
+    choicesElement.style.opacity = 1
+    choicesElement.style.pointerEvents = 'auto'
     ingine.choicelist.forEach(e => {
-        let li = document.createElement('li')
+        let li = (ingine.choicelist.length === 1) ? document.createElement("p") : document.createElement('li');
+        li.classList.add('choice')
         li.innerText = e.title
         li.addEventListener("click", () => {
             // what needs to happen document-side when a choice is made?
             ingine.choose(ingine.choicelist.indexOf(e))
             choicesElement.style.opacity = 0
-            // choicesElement.innerHTML = '<p>&nbsp;</p>'*choicesElement.children.length // insane
             choicesElement.style.pointerEvents = 'none'
+            // choicesElement.innerHTML = '<p>&nbsp;</p>'*choicesElement.children.length // insane
             setTimeout(showText(e.text), 400)
             setTimeout(run, 800)
             // writeText(e.text, run)
         })
         choicesElement.appendChild(li)
     })
-    choicesElement.style.opacity = 1
-    choicesElement.style.pointerEvents = 'auto'
 }
 
 id('begin').addEventListener("click", () => {
