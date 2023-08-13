@@ -15,6 +15,7 @@
             </div>
             <div id="textarea">
                 <p>—</p>
+                <div id="scrollAnchor"></div>
             </div>
         </div>
     </div>
@@ -38,10 +39,31 @@
             margin:0 auto 0 auto;
             padding-bottom:12px;
             display:flex;
-            overflow-y:auto;
-            overflow-x:hidden;
+            /* overflow-y:auto; */
+            /* overflow-x:hidden; */
             word-wrap:normal;
             flex-direction:column-reverse;
+        }
+        #textarea {
+            padding:0 8px 0 8px;
+            color:white;
+            line-height:1.6;
+            overflow-y:auto; /* NO SCROLL FOR YOU edit: fucj */
+            scrollbar-width:none;
+        }
+
+        #textarea::-webkit-scrollbar {
+            display:none;
+        }
+        #textarea > p {
+            animation:newtext 0.2s ease;
+            /* overflow-anchor:none; */
+        }
+        #scrollAnchor {
+            height:1px;
+            /* border:1px solid white; */
+            /* overflow-anchor:auto; */
+            /* so sad this doesnt work */
         }
         .panel::after {
             --after-width:32%;
@@ -55,21 +77,13 @@
             border-radius:2px;
             filter:blur(15px);
         }
-        #textarea {
-            padding:0 8px 0 8px;
-            color:white;
-            line-height:1.6;
-            overflow-y:hidden; /* NO SCROLL FOR YOU */
-        }
-        #textarea > p {
-            animation:newtext 0.2s ease;
-        }
         @keyframes slideup {
             from {
-                margin-bottom:0px;
+                margin-bottom:calc(-1 * var(--slide-height) - 4px);
+                /* margin-bottom:0; */
             }
             to {
-                margin-bottom:var(--slide-height);
+                margin-bottom:var(--slide-height / 2);
             }
         }
         @keyframes newtext {

@@ -1,6 +1,7 @@
 let traits = {
     claustrophobia: false
 }
+let temp = "";
 
 let game = {
     start: {
@@ -56,16 +57,39 @@ let game = {
     },
     "road 3": {
         name: "road 3",
-        text: `${(traits.claustrophobia) ? "Finally, the":"The"} whole view opens up--what was once a steep embankment rises to meet the road grade as a large field with a stunning oak tree. The meadow 
-        dips into the forest, towards the creek you parked on top of. The receding  
-        sunlight makes the grasses' long shadows sway across the road, almost intoxicatingly. The bay is mostly invisible; you can even feel a slight drizzle from
-        the incoming fog. The scene sparked your memory, and now you recognize some of the landmarks you once knew so well. <i>This must be it,</i> you think.`,
+        // (traits.claustrophobia) ? "Finally, the":"The"
+        text: "${(traits.claustrophobia) ? 'Finally, the':'The'} whole view opens up--what was once a steep embankment rises to meet the road grade as a large field with a stunning oak tree. The meadow "+
+        "dips into the forest, towards the creek you parked on top of. The receding "+
+        "sunlight makes the grasses' long shadows sway across the road, almost intoxicatingly. The bay is mostly invisible; you can even feel a slight drizzle from "+
+        "the incoming fog. The scene sparked your memory, and now you recognize some of the landmarks you once knew so well. <i>This must be it,</i> you think.",
         choiceset: [[
             {
                 title: "Approach the oak",
                 text: "you approach the oak",
                 location: "oak"
             },
+            {
+                title: "Head into the creek",
+                text: "you go into the creek",
+                location: "downriver 2"
+            }
+        ]]
+    },
+    "oak": {
+        title: "tree 1",
+        text: `oak tree.`,
+        choiceset: [[
+            {
+                title: "Head into the creek",
+                text: "you go into the creek",
+                location: "downriver 2"
+            }
+        ]]
+    },
+    "downriver 2": {
+        title: "downriver 2",
+        text: `downriver 2`,
+        choiceset: [[
             {
                 title: "Head into the creek",
                 text: "you go into the creek",

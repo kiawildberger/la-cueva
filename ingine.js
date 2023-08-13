@@ -65,6 +65,7 @@ class Ingine {
             this.choicelist = this.current.choiceset[this.indexOrZero(this.current.setidx)]
         }
         if(choice.action) choice.action.call(this); // i hope 'this' is preserved in these callbacks? ill have to see when it all works
+        if(choice.action) console.log('func called')
         return choice;
     }
     indexOrZero(idx) { // setidx will commonly frequently be undefined

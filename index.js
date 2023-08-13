@@ -1,23 +1,53 @@
 const id = e => {return document.getElementById(e)}
 let textElement = id('textarea')
 let choicesElement = id('choices')
+let scrollAnchor = id('scrollAnchor')
+let interval;
 
 let ingine = new Ingine(game, "start");
+
+function scrollToBottom() {
+    textElement.scrollTop = textElement.scrollHeight;
+    let i = 0;
+    interval = setInterval(() => {
+        if(i === 1000) {
+            clearInterval(interval)
+        } else {
+            textElement.scrollTop += i
+        }
+        i++
+    }, 1000/(textElement.scrollHeight-textElement.scrollTop))
+}
 
 function showText(text) {
     let p = document.createElement('p')
     text = text.replace(/--/g, '—') // em dash
     p.innerHTML = text // innerHTML for italics etc
-    let slideheight;
+    let slideheight, animtime = 500;
     if(textElement.children.length >= 1) {
-        slideheight = (text.length/76) * (18*1.6) // approx. 76 char per line, font size 18 and line spacing 1.6
-        document.body.style.setProperty('--slide-height', Math.round(slideheight)+"px")
-        textElement.children[textElement.children.length-1].style.animation = "slideup .2s ease";
+        slidecalc = (text.length/76) * (18*1.6) // approx. 76 char per line, font size 18 and line spacing 1.6
+        // slideheight = -100+(text.length/1.3) // did the fucken math. on Desmos. eat shit. edit: fuck
+        // slideheight = text.length*4/6
+        p.style.opacity = 1
+        // textElement.appendChild(p)
+        textElement.insertBefore(p, scrollAnchor)
+        slideheight = p.offsetHeight // genius
+        // slideheight += (text.includes("<br>")) ? (text.match(/\<br\>/g).length-1) * 28.8 : slideheight; // 28.8 is fontsize times lineheight
+        document.body.style.setProperty('--slide-height', slideheight+"px")
+
+        // p.style.opacity = 0;
+        // p.style.transition = "opacity "+(animtime*1.5)/1000+"s ease";
+        // p.style.opacity = 1;
+
+        // now its children length -2 because of the scroll anchor
+        textElement.children[textElement.children.length-2].style.animation = "slideup "+animtime/1000+"s ease";
+        // scrollAnchor.scrollIntoView({behavior: "smooth", block:"end", alignToTop:false})
     }
     setTimeout(() => {
-        textElement.appendChild(p)
-        console.log(p.offsetHeight, slideheight);
-    }, 205)
+        // console.log(`calculated: ${slideheight}\nheight: ${p.offsetHeight}\nlength: ${text.length}`);
+        // scrollToBottom();
+        textElement.scroll({top:textElement.scrollHeight, behavior:"smooth"})
+    }, animtime/2)
 }
 
 function writeText(text, cb=null) { // this is the one i wrote. would like it to pause on commas/periods
@@ -37,13 +67,23 @@ function writeText(text, cb=null) { // this is the one i wrote. would like it to
     if(cb) setTimeout(cb, (30*text.length)+200)
 }
 
+// okay so this works when i look at it in the console but not when its actually running.
+const dynamicTemplate = (template, o) => {
+    return eval("`"+template+"`")
+    // const handler = new Function('t', 'const tagged = (t) => `' + template + '`; return tagged(t)')
+    // return handler(o)
+}
+// const template1 = 'Hello ${o.name}!'
+// let o = {name: 'world'}
+// console.log(dynamicTemplate(template1, o ))
+// all from https://gist.github.com/tmarshall/31e640e1fa80c597cc5bf78566b1274c
 
 let gamelocation = {name:undefined}
 function run() {
     choicesElement.innerHTML = ''
     let { current } = ingine;
     // only the choices update if the location doesn't change
-    if(current.name != gamelocation.name) showText(current.text.replace(/\t|\n/g, ''))
+    if(current.name != gamelocation.name) showText(dynamicTemplate(current.text.replace(/\t|\n/g, '')))
     choicesElement.style.opacity = 1
     choicesElement.style.pointerEvents = 'auto'
     ingine.choicelist.forEach(e => {
@@ -56,7 +96,12 @@ function run() {
             choicesElement.style.opacity = 0
             choicesElement.style.pointerEvents = 'none'
             // choicesElement.innerHTML = '<p>&nbsp;</p>'*choicesElement.children.length // insane
-            setTimeout(showText(e.text), 400)
+
+            // for the dynamic templates
+            console.log(dynamicTemplate(e.text))
+
+            // setTimeout(showText(e.text), 400)
+            setTimeout(showText(dynamicTemplate(e.text)), 400)
             setTimeout(run, 800)
             // writeText(e.text, run)
         })
