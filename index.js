@@ -4,6 +4,8 @@ let choicesElement = id('choices')
 let scrollAnchor = id('scrollAnchor')
 let interval;
 
+let choicedelay = 600, textdelay = 900;
+
 let ingine = new Ingine(game, "start");
 
 function scrollToBottom() {
@@ -28,16 +30,15 @@ function showText(text) {
         slidecalc = (text.length/76) * (18*1.6) // approx. 76 char per line, font size 18 and line spacing 1.6
         // slideheight = -100+(text.length/1.3) // did the fucken math. on Desmos. eat shit. edit: fuck
         // slideheight = text.length*4/6
-        p.style.opacity = 1
+        p.style.opacity = 0;
         // textElement.appendChild(p)
         textElement.insertBefore(p, scrollAnchor)
-        slideheight = p.offsetHeight // genius
+        slideheight = p.offsetHeight // genius. never would have thought of this
         // slideheight += (text.includes("<br>")) ? (text.match(/\<br\>/g).length-1) * 28.8 : slideheight; // 28.8 is fontsize times lineheight
         document.body.style.setProperty('--slide-height', slideheight+"px")
 
-        // p.style.opacity = 0;
-        // p.style.transition = "opacity "+(animtime*1.5)/1000+"s ease";
-        // p.style.opacity = 1;
+        p.style.transition = "opacity "+(animtime*1.5)/1000+"s ease";
+        p.style.opacity = 1;
 
         // now its children length -2 because of the scroll anchor
         textElement.children[textElement.children.length-2].style.animation = "slideup "+animtime/1000+"s ease";
@@ -68,7 +69,7 @@ function writeText(text, cb=null) { // this is the one i wrote. would like it to
 }
 
 // okay so this works when i look at it in the console but not when its actually running.
-const dynamicTemplate = (template, o) => {
+const dynamicTemplate = template => {
     return eval("`"+template+"`")
     // const handler = new Function('t', 'const tagged = (t) => `' + template + '`; return tagged(t)')
     // return handler(o)
@@ -78,12 +79,14 @@ const dynamicTemplate = (template, o) => {
 // console.log(dynamicTemplate(template1, o ))
 // all from https://gist.github.com/tmarshall/31e640e1fa80c597cc5bf78566b1274c
 
-let gamelocation = {name:undefined}
+let gamescene = {name:0}
 function run() {
     choicesElement.innerHTML = ''
     let { current } = ingine;
-    // only the choices update if the location doesn't change
-    if(current.name != gamelocation.name) showText(dynamicTemplate(current.text.replace(/\t|\n/g, '')))
+    // only the choices update if the scene doesn't change
+    if(current.name != gamescene.name) {
+        showText(dynamicTemplate(ingine.current.text.replace(/\t|\n/g, ''))) // this is scene text
+    }
     choicesElement.style.opacity = 1
     choicesElement.style.pointerEvents = 'auto'
     ingine.choicelist.forEach(e => {
@@ -97,13 +100,9 @@ function run() {
             choicesElement.style.pointerEvents = 'none'
             // choicesElement.innerHTML = '<p>&nbsp;</p>'*choicesElement.children.length // insane
 
-            // for the dynamic templates
-            console.log(dynamicTemplate(e.text))
-
             // setTimeout(showText(e.text), 400)
-            setTimeout(showText(dynamicTemplate(e.text)), 400)
-            setTimeout(run, 800)
-            // writeText(e.text, run)
+            setTimeout(showText(dynamicTemplate(e.text)), choicedelay) // this is choice text
+            setTimeout(run, choicedelay+textdelay)
         })
         choicesElement.appendChild(li)
     })
