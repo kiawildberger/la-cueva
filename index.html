@@ -18,23 +18,31 @@
                 <div id="scrollAnchor"></div>
             </div>
         </div>
+        <div class="afterpanel"></div>
     </div>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&family=EB+Garamond&display=swap');
+        @media (max-width:800px) {
+            .afterpanel {display:none;}
+            .panel { margin:0 auto 0 15% !important; }
+            /* need to also make the choices nice on mobile. not sure how yet */
+        }
         body {
             --choice-primary:skyblue;
             --choice-hover:color-mix(in srgb, black 20%, var(--choice-primary));
             --slide-height:0px;
             background-color:#272727;
             font-family:'EB Garamond';
-            font-size:20px;
+            font-size:1.2em;
+            overflow-y:hidden;
         }
         /* the scrollbar is ugly as hell but Apparently there is literally nothing i can do??? help */
         /* also the blur thing looks like shit on chrome */
         .panel {
-            max-height:70%;
-            width:30%;
+            min-height:70%;
+            height:100%;
+            width:40%;
             /* border:2px solid black; */
             margin:0 auto 0 auto;
             padding-bottom:12px;
@@ -43,6 +51,9 @@
             /* overflow-x:hidden; */
             word-wrap:normal;
             flex-direction:column-reverse;
+            /* mask-image: gradient(linear, center center, center top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+            -webkit-mask-image: gradient(linear, center bottom, center top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0))); */
+            mask-image: linear-gradient(0deg, rgba(0,0,0,1) 50%, rgba(0,0,0,0));
         }
         #textarea {
             padding:0 8px 0 8px;
@@ -50,6 +61,7 @@
             line-height:1.6;
             overflow-y:auto; /* NO SCROLL FOR YOU edit: fucj */
             scrollbar-width:none;
+            min-width:500px;
         }
 
         #textarea::-webkit-scrollbar {
@@ -65,8 +77,8 @@
             /* overflow-anchor:auto; */
             /* so sad this doesnt work */
         }
-        .panel::after {
-            --after-width:32%;
+        /* .panel::after {
+            --after-width:42%;
             z-index:-1;
             position:absolute;
             left:calc(50% - (var(--after-width) / 2));
@@ -76,6 +88,20 @@
             border:4px solid #181818;
             border-radius:2px;
             filter:blur(15px);
+        } */
+        .afterpanel {
+            content:'';
+            height:100%;
+            width:42%;
+            min-width:500px;
+            position:absolute;
+            top:0;
+            left:calc(50% - 42% / 2);
+            z-index:-1;
+            border-left:3px solid white;
+            border-right:3px solid white;
+            -webkit-box-reflect:below;
+            filter:blur(8px);
         }
         @keyframes slideup {
             from {
@@ -111,8 +137,16 @@
         .choice:hover { color:var(--choice-hover); }
     </style>
     <script>
-        document.querySelector('.panel').style.height = window.innerHeight*.7+"px";
-        window.addEventListener("resize", () => document.querySelector('.panel').style.height = window.innerHeight*.7+"px")
+        let percentHeight = .85
+        let fancymath = (100/window.innerHeight)*10
+        percentHeight = Math.min(fancymath, 1)
+        // console.log(fancymath)
+        window.addEventListener("resize", () => {
+            fancymath = (100/window.innerHeight)*10
+            percentHeight = Math.max(.85, Math.min(fancymath, 1))
+            document.querySelector('.panel').style.height = window.innerHeight*percentHeight+"px"
+        })
+        document.querySelector('.panel').style.height = window.innerHeight*percentHeight+"px";
     </script>
 
     <script src="./ingine.js" type="application/javascript"></script>

@@ -6,7 +6,7 @@ let interval;
 
 let choicedelay = 600, textdelay = 900;
 
-let ingine = new Ingine(game, "start");
+let ingine = new Ingine(game, "oak");
 
 function scrollToBottom() {
     textElement.scrollTop = textElement.scrollHeight;
@@ -83,8 +83,7 @@ let gamescene = {name:0}
 function run() {
     choicesElement.innerHTML = ''
     let { current } = ingine;
-    // only the choices update if the scene doesn't change
-    if(current.name != gamescene.name) {
+    if(current.name != gamescene.name) { // only the choices update if the scene doesn't change
         showText(dynamicTemplate(ingine.current.text.replace(/\t|\n/g, ''))) // this is scene text
     }
     choicesElement.style.opacity = 1
@@ -103,6 +102,7 @@ function run() {
             // setTimeout(showText(e.text), 400)
             setTimeout(showText(dynamicTemplate(e.text)), choicedelay) // this is choice text
             setTimeout(run, choicedelay+textdelay)
+            gamescene.name = current.name
         })
         choicesElement.appendChild(li)
     })

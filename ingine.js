@@ -63,10 +63,11 @@ class Ingine {
         // i dont need to check if there is a choiceset, because the choiceset property will always be at least 1 array deep.
         // so this.current.setidx is 0 if there's only one set
         this.current.setidx = this.indexOrZero(this.current.setidx)
-        this.choicelist = this.current.choiceset[this.current.setidx]
+        // if(!this.current.choiceset[0] instanceof Array) this.current.choiceset = [this.current.choiceset] // if its not a 2-deep array, make it. (didn't work)
         if(this.current.textfn) this.current.text = this.current.textfn()
         let choice = this.current.choiceset[this.current.setidx][idx]
-        if(choice.newsetidx) this.current.setidx = choice.newsetidx;
+        if(choice.newsetidx != undefined) this.current.setidx = choice.newsetidx;
+        this.choicelist = this.current.choiceset[this.current.setidx]
         if(choice.scene) { 
             this.previous = this.current;
             if(this.current.keepChoiceIdx === undefined || !this.current.keepChoiceIdx) this.current.setidx = 0;
