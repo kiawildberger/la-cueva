@@ -6,7 +6,7 @@ let interval;
 
 let choicedelay = 600, textdelay = 900;
 
-let ingine = new Ingine(game, "oak");
+let ingine = new Ingine(game, "tunnel 1");
 
 function scrollToBottom() {
     textElement.scrollTop = textElement.scrollHeight;
@@ -70,6 +70,7 @@ function writeText(text, cb=null) { // this is the one i wrote. would like it to
 
 // okay so this works when i look at it in the console but not when its actually running.
 const dynamicTemplate = template => {
+    // console.log(template)
     return eval("`"+template+"`")
     // const handler = new Function('t', 'const tagged = (t) => `' + template + '`; return tagged(t)')
     // return handler(o)
@@ -100,6 +101,7 @@ function run() {
             // choicesElement.innerHTML = '<p>&nbsp;</p>'*choicesElement.children.length // insane
 
             // setTimeout(showText(e.text), 400)
+            console.log(e.text)
             setTimeout(showText(dynamicTemplate(e.text)), choicedelay) // this is choice text
             setTimeout(run, choicedelay+textdelay)
             gamescene.name = current.name

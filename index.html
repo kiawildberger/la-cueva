@@ -28,6 +28,11 @@
             .panel { margin:0 auto 0 15% !important; }
             /* need to also make the choices nice on mobile. not sure how yet */
         }
+        @media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) { /* chrome for the -webkit-mask-image blur */
+            .panel {
+                -webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,1) 50%, rgba(0,0,0,0));
+            }
+        }
         body {
             --choice-primary:skyblue;
             --choice-hover:color-mix(in srgb, black 20%, var(--choice-primary));

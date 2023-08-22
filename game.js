@@ -2,8 +2,10 @@ let traits = {
     claustrophobia: false,
     road: false,
     treetop: false,
+    art: false,
     hopefulCount: 0, // increment if player thoroughly investigates every possibility
 }
+// at the end maybe i can make some big spectacle of all the significant choices the player made
 let temp = "";
 
 let game = {
@@ -180,9 +182,68 @@ let game = {
     },
     "creek 1": {
         name: "creek 1",
-        text: `creek !!!`,
+        text: `The path deposits you at the bank of a dry creekbed next to a stand of redwoods. Redwood needles whisper to you, and you can faintly hear 
+        birds settling in for the night before they begin their fall migration in search of undying sunlight. Your search, however, is instead in darkness--
+        you're trying to find a bygone adolescent hideout: a cave where you and your friends spent the better part of your pre-adult summers. You can picture it clearly, 
+        albeit through the rose-colored glasses of memory, and you're confident you can find it before too long. A culvert leads off to your right, back underneath the road, 
+        but you know that your cave is on the western side of the highway.`,
         choiceset: [[
-
+            {
+                title: "Enter the culvert",
+                text: `You climb up the block of concrete that separates the culvert from the creek, immediately greeted by broken glass and mixed garbage. 
+                It's not unpleasant, but the spectacle of it is overshadowed by the heavily spraypainted walls of the culvert.`,
+                scene: "tunnel 1"
+            },
+            {
+                title: "Follow the creek",
+                text: "Moving towards the setting sun, you climb over rocks and trees fallen at improbable angles. Various ferns and nettles line the bank, reminiscent of wetter years.",
+                scene: "creek 2"
+            }
+        ]]
+    },
+    "tunnel 1": {
+        name: "tunnel 1",
+        text: `The inside of the pipe is lined with pictures. Body parts and animals and trees line the walls, complementing the stars and eulogies that follow them. 
+        Some of them have been painted over, but mostly the spraypaint triumphs--it's almost an ecosystem of its own.`,
+        choiceset: [[
+            {
+                title: "Inspect the graffiti",
+                text: `It's almost unfortunate that the errant herd of deer would have to see themselves depicted like this, but you're not going to do anything. 
+                The squirrels and moles must be happy, unrepresented and uninsulted.`,
+                scene: "tunnel 2",
+                action: () => {traits.art = false}
+            },
+            {
+                title: "Admire the art",
+                text: `There's someone's name written in big letters, a constellation splattered across the ceiling. How sacred it must be to imprint someone's being onto the walls of a drain pipe, 
+                beneath a deeply wooded road. How upsetting it would be to get painted over by maintenance crews ever ten years.`,
+                scene: "tunnel 2",
+                action: () => {traits.art = true}
+            }
+        ]]
+    },
+    "tunnel 2": {
+        name: "tunnel 2",
+        text: `In front of you, the fading light at the end of the tunnel gives an impermanent air to the whole scene.`,
+        choiceset: [[
+            {
+                title: "Return to the creek",
+                text: "${(traits.art) ? 'The moment is over; you':'You cannot stand the sight any longer and'} hop back down into the creek.",
+                scene: 'creek 2'
+            }
+        ]]
+    },
+    "creek 2": {
+        name: "creek 2",
+        text: `Ahead, the creek bends to the right. A family of redwoods stands to the inside of the corner, tan oaks and bays nestled beside, askew. 
+        You remember this spot.`,
+        choiceset: [[
+            {
+                title: "",
+                text: "",
+                scene: "",
+                action: () => {}
+            }
         ]]
     },
     "test": {
