@@ -182,9 +182,9 @@ let game = {
     },
     "creek 1": {
         name: "creek 1",
-        text: `The path deposits you at the bank of a dry creekbed next to a stand of redwoods. Redwood needles whisper to you, and you can faintly hear 
-        birds settling in for the night before they begin their fall migration in search of undying sunlight. Your search, however, is instead in darkness--
-        you're trying to find a bygone adolescent hideout: a cave where you and your friends spent the better part of your pre-adult summers. You can picture it clearly, 
+        text: `The path deposits you at the bank of a dry creekbed next to a stand of redwoods. Their needles whisper to you, and you can faintly hear 
+        birds settling in for the night before they begin their fall migration in search of undying sunlight. Your search, however, is instead in darkness--you're 
+        trying to find a bygone adolescent hideout: a cave where you and your friends spent the better part of your pre-adult summers. You can picture it clearly, 
         albeit through the rose-colored glasses of memory, and you're confident you can find it before too long. A culvert leads off to your right, back underneath the road, 
         but you know that your cave is on the western side of the highway.`,
         choiceset: [[
@@ -196,7 +196,7 @@ let game = {
             },
             {
                 title: "Follow the creek",
-                text: "Moving towards the setting sun, you climb over rocks and trees fallen at improbable angles. Various ferns and nettles line the bank, reminiscent of wetter years.",
+                text: "Moving towards the setting sun, you climb over rocks and trees fallen at improbable angles. Sword ferns and hedgenettles line the bank, reminiscent of wetter years.",
                 scene: "creek 2"
             }
         ]]
@@ -216,7 +216,7 @@ let game = {
             {
                 title: "Admire the art",
                 text: `There's someone's name written in big letters, a constellation splattered across the ceiling. How sacred it must be to imprint someone's being onto the walls of a drain pipe, 
-                beneath a deeply wooded road. How upsetting it would be to get painted over by maintenance crews ever ten years.`,
+                beneath a deeply wooded road. How profane, to be erased by maintenance crews decennially.`,
                 scene: "tunnel 2",
                 action: () => {traits.art = true}
             }
@@ -224,25 +224,41 @@ let game = {
     },
     "tunnel 2": {
         name: "tunnel 2",
-        text: `In front of you, the fading light at the end of the tunnel gives an impermanent air to the whole scene.`,
+        text: `In front of you, the fading light at the end of the tunnel gives an impermanent air to the whole scene.`, // e suggested revision for flow here
         choiceset: [[
             {
                 title: "Return to the creek",
-                text: "${(traits.art) ? 'The moment is over; you':'You cannot stand the sight any longer and'} hop back down into the creek.",
+                text: "${(traits.art) ? 'The moment is over; you':'Ready to move on, you'} hop back down into the creek.",
                 scene: 'creek 2'
             }
         ]]
     },
     "creek 2": {
         name: "creek 2",
-        text: `Ahead, the creek bends to the right. A family of redwoods stands to the inside of the corner, tan oaks and bays nestled beside, askew. 
-        You remember this spot.`,
+        text: `Ahead, the creek bends to the right. A family of redwoods stands to the inside of the corner, tan oaks and bays nestled beside it, askew. 
+        You remember this spot, even through the fading light.`,
         choiceset: [[
             {
-                title: "",
-                text: "",
-                scene: "",
-                action: () => {}
+                title: "Keep moving",
+                text: `It's a beautiful evening to be deep in the woods--even in a place as familiar as this. You know this creek, 
+                and you know it well. It's been years, but you can still recognize some of the rocks and fallen trees.
+                `,
+                scene: "creek 3"
+            },
+            {
+                title: "Hurry",
+                // not a fan of this (below)
+                text: "Conscious of the time of day, you adjust your pace, taking care not to hurt yourself on the scattered rocks.",
+                scene: "creek 4",
+            }
+        ]]
+    },
+    "creek 3": {
+        name: "creek 3",
+        text: ``,
+        choiceset: [[
+            {
+                
             }
         ]]
     },
@@ -253,9 +269,10 @@ let game = {
         },
         choiceset: [[
             {
-                title: 'do thing',
-                text: 'something happened !',
-                newsetidx: 0
+                title: "Keep moving",
+                text: "",
+                scene: "",
+                action: () => {}
             }
         ]]
     }

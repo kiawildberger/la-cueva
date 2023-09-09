@@ -6,7 +6,7 @@ let interval;
 
 let choicedelay = 600, textdelay = 900;
 
-let ingine = new Ingine(game, "tunnel 1");
+let ingine = new Ingine(game, "start");
 
 function scrollToBottom() {
     textElement.scrollTop = textElement.scrollHeight;
