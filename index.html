@@ -14,12 +14,21 @@
                 </ol>
             </div>
             <div id="textarea">
-                <p>—</p>
+                <br><br><br>
+                <p id="newtextmarker">—</p>
                 <div id="scrollAnchor"></div>
             </div>
         </div>
         <div class="afterpanel"></div>
     </div>
+    <!-- <img id="bg" src="./asfalt-light.png"/> -->
+    <svg>
+        <defs>
+            <filter id="blurFilter">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+              </filter>
+        </defs>
+    </svg>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&family=EB+Garamond&display=swap');
@@ -30,24 +39,56 @@
         }
         @media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) { /* chrome for the -webkit-mask-image blur */
             .panel {
-                -webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,1) 50%, rgba(0,0,0,0));
+                -webkit-mask-image: linear-gradient(0deg, black 50%, transparent);
             }
         }
         body {
             --choice-primary:skyblue;
             --choice-hover:color-mix(in srgb, black 20%, var(--choice-primary));
             --slide-height:0px;
+            --borderColor:#808080;
+            transition: var(--borderColor) 5s ease;
             background-color:#272727;
+            /* background-image:url("./asfalt-light.png"); */
             font-family:'EB Garamond';
             font-size:1.2em;
             overflow-y:hidden;
         }
+        body::before {
+            content:'';
+            width:100%;
+            height:100%;
+            background-image:url("./clean-gray-paper.png");
+            position:absolute;
+            top:0;
+            left:0;
+            opacity:0.2;
+        }
+        body::after {
+            content:'';
+            position:absolute;
+            width:100%;
+            height:100%;
+            top:0;
+            left:0;
+            background:radial-gradient(#253d2d,#272727 70%);
+            opacity:0.8;
+            z-index:-1;
+        }
+        /* #bg {
+            position:absolute;
+            top:0;
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            opacity:.6;
+        } */
         /* the scrollbar is ugly as hell but Apparently there is literally nothing i can do??? help */
         /* also the blur thing looks like shit on chrome */
         .panel {
             min-height:70%;
             height:100%;
-            width:40%;
+            width:50%;
             /* border:2px solid black; */
             margin:0 auto 0 auto;
             padding-bottom:12px;
@@ -56,9 +97,10 @@
             /* overflow-x:hidden; */
             word-wrap:normal;
             flex-direction:column-reverse;
-            /* mask-image: gradient(linear, center center, center top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
-            -webkit-mask-image: gradient(linear, center bottom, center top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0))); */
-            mask-image: linear-gradient(0deg, rgba(0,0,0,1) 50%, rgba(0,0,0,0));
+            --blurGradient: linear-gradient(0deg, black 75%, transparent 100%);
+            mask: var(--blurGradient);
+            /* background: var(--blurGradient); */
+            /* filter:url("#blurFilter"); /* i dont think this will ever work unless i really position:absolute some shit */
         }
         #textarea {
             padding:0 8px 0 8px;
@@ -82,31 +124,26 @@
             /* overflow-anchor:auto; */
             /* so sad this doesnt work */
         }
-        /* .panel::after {
-            --after-width:42%;
-            z-index:-1;
-            position:absolute;
-            left:calc(50% - (var(--after-width) / 2));
-            content:'';
-            height:100%;
-            width:var(--after-width);
-            border:4px solid #181818;
-            border-radius:2px;
-            filter:blur(15px);
-        } */
+        div.spacer {
+            margin:19.2px; /* this is what the inspector told me. weird. */
+        }
         .afterpanel {
             content:'';
             height:100%;
-            width:42%;
+            width:38%;
+            opacity:0;
             min-width:500px;
             position:absolute;
             top:0;
             left:calc(50% - 42% / 2);
             z-index:-1;
-            border-left:3px solid white;
-            border-right:3px solid white;
+            border-left:20px solid var(--borderColor);
+            border-right:20px solid var(--borderColor);
             -webkit-box-reflect:below;
-            filter:blur(8px);
+            filter:blur(5px);
+            animation-direction:alternate;
+            /* animation: pulse 30s infinite; */
+            /* transition: opacity 8s ease; */
         }
         @keyframes slideup {
             from {
@@ -115,6 +152,17 @@
             }
             to {
                 margin-bottom:var(--slide-height / 2);
+            }
+        }
+        @keyframes pulse {
+            0% {
+                opacity:.6;
+            }
+            50% {
+                opacity: .2;
+            }
+            100% {
+                opacity:.6;
             }
         }
         @keyframes newtext {
@@ -139,7 +187,10 @@
             margin-bottom:6px;
             color:var(--choice-primary);
         }
-        .choice:hover { color:var(--choice-hover); }
+        .choice:hover { 
+            color:var(--choice-hover);
+            /* text-shadow: 0px 0px 20px color-mix(in srgb, white 10%, var(--choice-hover)); */
+        }
     </style>
     <script>
         let percentHeight = .85

@@ -1,10 +1,9 @@
 const id = e => {return document.getElementById(e)}
-let textElement = id('textarea')
-let choicesElement = id('choices')
-let scrollAnchor = id('scrollAnchor')
+let textElement = id('textarea'), choicesElement = id('choices'), 
+    scrollAnchor = id('scrollAnchor'), ntMarker = id("newtextmarker")
 let interval;
 
-let choicedelay = 600, textdelay = 900;
+let choicedelay = 400, textdelay = 900;
 
 let ingine = new Ingine(game, "start");
 
@@ -21,10 +20,18 @@ function scrollToBottom() {
     }, 1000/(textElement.scrollHeight-textElement.scrollTop))
 }
 
-function showText(text) {
+function createTextElement(text) {
+    let animtime = 500
     let p = document.createElement('p')
-    text = text.replace(/--/g, '—') // em dash
-    p.innerHTML = text // innerHTML for italics etc
+    text = text.replace(/--/g, '—')
+    p.style.opacity = 0;
+    p.style.transition = "opacity "+(animtime*1.5/1000)+"s ease";
+    p.innerHTML = text;
+    return p
+}
+
+function showText(text) {
+    let p = createTextElement(text)
     let slideheight, animtime = 500;
     if(textElement.children.length >= 1) {
         slidecalc = (text.length/76) * (18*1.6) // approx. 76 char per line, font size 18 and line spacing 1.6
@@ -33,6 +40,7 @@ function showText(text) {
         p.style.opacity = 0;
         // textElement.appendChild(p)
         textElement.insertBefore(p, scrollAnchor)
+        textElement.insertBefore(ntMarker, p)
         slideheight = p.offsetHeight // genius. never would have thought of this
         // slideheight += (text.includes("<br>")) ? (text.match(/\<br\>/g).length-1) * 28.8 : slideheight; // 28.8 is fontsize times lineheight
         document.body.style.setProperty('--slide-height', slideheight+"px")
@@ -81,11 +89,19 @@ const dynamicTemplate = template => {
 // all from https://gist.github.com/tmarshall/31e640e1fa80c597cc5bf78566b1274c
 
 let gamescene = {name:0}
-function run() {
+function run(oldchoice = null) {
     choicesElement.innerHTML = ''
     let { current } = ingine;
-    if(current.name != gamescene.name) { // only the choices update if the scene doesn't change
-        showText(dynamicTemplate(ingine.current.text.replace(/\t|\n/g, ''))) // this is scene text
+    let parsedtext = ingine.current.text.replace(/\t|\n/g, '')
+    if(current.name != gamescene.name) { // if the scene changed (so, most of the time)
+        if(oldchoice) {
+            showText(dynamicTemplate(oldchoice + `<div class="spacer">\n</div>` + parsedtext))
+        } else {
+            showText(dynamicTemplate(parsedtext)) // this is scene text
+        }
+        // showText(dynamicTemplate(parsedtext))
+    } else {
+        if(oldchoice) showText(dynamicTemplate(oldchoice))
     }
     choicesElement.style.opacity = 1
     choicesElement.style.pointerEvents = 'auto'
@@ -101,9 +117,12 @@ function run() {
             // choicesElement.innerHTML = '<p>&nbsp;</p>'*choicesElement.children.length // insane
 
             // setTimeout(showText(e.text), 400)
-            console.log(e.text)
-            setTimeout(showText(dynamicTemplate(e.text)), choicedelay) // this is choice text
-            setTimeout(run, choicedelay+textdelay)
+            // setTimeout(showText(dynamicTemplate(e.text)), choicedelay) // this is choice text
+            // setTimeout(run, choicedelay+textdelay)
+            setTimeout(() => {
+                // showText(dynamicTemplate(e.text))
+                run(e.text)
+            }, choicedelay)
             gamescene.name = current.name
         })
         choicesElement.appendChild(li)
@@ -115,4 +134,4 @@ id('begin').addEventListener("click", () => {
     choicesElement.style.opacity = 0;
     choicesElement.style.pointerEvents = 'none'
     setTimeout(run, 1500);
-})
+});

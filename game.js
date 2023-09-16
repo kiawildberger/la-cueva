@@ -5,8 +5,8 @@ let traits = {
     art: false,
     hopefulCount: 0, // increment if player thoroughly investigates every possibility
 }
-// at the end maybe i can make some big spectacle of all the significant choices the player made
 let temp = "";
+let unfinished = { title: "Continue", text: "This is the end of the playable area. Come back in a little bit?" }
 
 let game = {
     start: {
@@ -25,7 +25,7 @@ let game = {
                 },
                 {
                     title: "Take the trail",
-                    text: "The heavily faded trail leads you through the dark forest floor, weaving between trees and depositing you at a long-dried creekbed.",
+                    text: "The heavily faded trail leads you through the dark forest floor, weaving between trees towards a long-dried creek.",
                     scene: "creek 1",
                 },
             ]]
@@ -50,7 +50,7 @@ let game = {
                     text: `You start feeling the pressure of the incoming darkness, so you're anxious to <i>get</i> somewhere. The forest makes you feel small, especially 
                     in the dimming light, and you'd like to be back into open air before too long. You'd rather not have to worry about finding your way back
                     in the complete darkness. You break into a gentle run.`,
-                    action: function() { traits.claustrophobia = true }
+                    action: function() { traits.claustrophobia = true; }
                 }
             ]]
     },
@@ -112,7 +112,8 @@ let game = {
                 },
                 {
                     title: "Leave the tree and head into the creek",
-                    text: "you go into the creek",
+                    text: `Through the sunkissed grass, you approach the fence that marks the border between the meadow and the forest. True to your memory, the canopy of trees hides an impossibly 
+                    steep slope--it's a wonder you could navigate it as a teenager.`,
                     scene: "downriver 2"
                 }
             ],
@@ -142,7 +143,8 @@ let game = {
             },
             {
                 title: "Leave the tree and head into the creek",
-                text: "you go into the creek",
+                text: `Through the sunkissed grass, you approach the fence that marks the border between the meadow and the forest. True to your memory, the canopy of trees hides an impossibly 
+                steep slope--it's a wonder you could navigate it as a teenager.`,
                 scene: "downriver 2"
             }
         ]]
@@ -165,19 +167,21 @@ let game = {
                 text: `Eyes damp, you dislodge yourself from the branch. You place your hands and feet on the familiar bumps and knots. A gentle wind blows your hair across your forehead, into your face. 
                 It's a beautiful evening to be anywhere, but especially here.`,
                 scene: "oak 2",
-                action: function() { traits.treetop = true }
+                action: function() { traits.treetop = true; }
             }
         ]]
     },
     "downriver 2": {
         name: "downriver 2",
-        text: `downriver 2`,
+        text: `At the bottom of the gulley you're surprised to see a small pile of junk. You see a rusted-out propane tank, fast food containers, 
+        and the remains of some two-by-fours--the kind of boards you and your friends would nail to trees.`,
         choiceset: [[
-            {
-                title: "Head into the creek",
-                text: "you go into the creek",
-                scene: "downriver 2"
-            }
+            unfinished
+            // {
+            //     title: "Head into the creek",
+            //     text: "you go into the creek",
+            //     scene: "downriver 2"
+            // }
         ]]
     },
     "creek 1": {
@@ -186,7 +190,7 @@ let game = {
         birds settling in for the night before they begin their fall migration in search of undying sunlight. Your search, however, is instead in darkness--you're 
         trying to find a bygone adolescent hideout: a cave where you and your friends spent the better part of your pre-adult summers. You can picture it clearly, 
         albeit through the rose-colored glasses of memory, and you're confident you can find it before too long. A culvert leads off to your right, back underneath the road, 
-        but you know that your cave is on the western side of the highway.`,
+        but you know that your cave is on the western side of the highway, somewhere on the gulley's slopes.`,
         choiceset: [[
             {
                 title: "Enter the culvert",
@@ -204,7 +208,7 @@ let game = {
     "tunnel 1": {
         name: "tunnel 1",
         text: `The inside of the pipe is lined with pictures. Body parts and animals and trees line the walls, complementing the stars and eulogies that follow them. 
-        Some of them have been painted over, but mostly the spraypaint triumphs--it's almost an ecosystem of its own.`,
+        Some of them have been painted over, but mostly the spraypaint triumphs--it's like an ecosystem of its own.`,
         choiceset: [[
             {
                 title: "Inspect the graffiti",
@@ -218,7 +222,7 @@ let game = {
                 text: `There's someone's name written in big letters, a constellation splattered across the ceiling. How sacred it must be to imprint someone's being onto the walls of a drain pipe, 
                 beneath a deeply wooded road. How profane, to be erased by maintenance crews decennially.`,
                 scene: "tunnel 2",
-                action: () => {traits.art = true}
+                action: () => {traits.art = true; }
             }
         ]]
     },
@@ -239,27 +243,41 @@ let game = {
         You remember this spot, even through the fading light.`,
         choiceset: [[
             {
-                title: "Keep moving",
+                title: "Walk",
                 text: `It's a beautiful evening to be deep in the woods--even in a place as familiar as this. You know this creek, 
-                and you know it well. It's been years, but you can still recognize some of the rocks and fallen trees.
-                `,
+                and you know it well. It's been years, but you can still recognize some of the rocks and fallen trees.`,
                 scene: "creek 3"
             },
             {
                 title: "Hurry",
                 // not a fan of this (below)
-                text: "Conscious of the time of day, you adjust your pace, taking care not to hurt yourself on the scattered rocks.",
+                text: "Conscious of the time of day, you adjust your pace, taking care not to hurt yourself on the scattered rocks and branches.",
                 scene: "creek 4",
             }
         ]]
     },
     "creek 3": {
         name: "creek 3",
-        text: ``,
+        text: `Funny how contradictory nature can be. This forest is so full of life--but silently so. The younger trees lean on each other; sword ferns vibrate
+        happily between the moist stones; hazelnuts find themselves in a tumble of leaves and leggy sprouts. It's all so rich with <i>character</i>, but at this moment 
+        not a soul moves. Reaching towards you from the mess of outcroppings above, the weathered bay trees blot out the sky, blanketing you and the creek in darkness and 
+        condemning everything below them to silence.`, // does this contribute to the Foreboding Vibe now?
         choiceset: [[
             {
-                
+                title: "Continue",
+                text: `The silence drags on, suffocatingly so. The noise from your movement helps, but you can't help but feel even more vulnerable because of it.`,
+                scene: "creek 4"
             }
+        ]]
+    },
+    "creek 4": {
+        name: "creek 4",
+        text: `A stick cracks underfoot, and you wince as it echoes off the steep gulley walls, finally settling somewhere downstream. 
+        You've arrived at a pool of water, accumulated there from years of runoff and the occasional trickle from the creek. `, 
+        // there's something here...maybe chair-esque or the dam? something that speaks of recent* but decrepit human activity
+        // chance for investigation and reminiscence...new trait probably too
+        choiceset: [[
+            unfinished
         ]]
     },
     "test": {
