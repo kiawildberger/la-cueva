@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <div style="height:100%;">
+    <div style="height:100%; margin:0; padding:0;">
         <!-- <div class="blurbox"></div> -->
         <!-- this blur box thing would ideally look Really Nice but it sucks bc chrome sucks so i Wont do it. maybe its cleaner like this anyway -->
         <div class="panel">
@@ -22,7 +22,7 @@
         <div class="afterpanel"></div>
     </div>
     <!-- <img id="bg" src="./asfalt-light.png"/> -->
-    <svg>
+    <svg style="display:none;">
         <defs>
             <filter id="blurFilter">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
@@ -71,7 +71,8 @@
             height:100%;
             top:0;
             left:0;
-            background:radial-gradient(#253d2d,#272727 70%);
+            /* background:radial-gradient(#253d2d,#272727 70%); */
+            background:radial-gradient(#6d4f02,#272727 70%);
             opacity:0.8;
             z-index:-1;
         }
@@ -91,7 +92,7 @@
             width:50%;
             /* border:2px solid black; */
             margin:0 auto 0 auto;
-            padding-bottom:12px;
+            /* padding-bottom:12px; */
             display:flex;
             /* overflow-y:auto; */
             /* overflow-x:hidden; */
@@ -196,7 +197,6 @@
         let percentHeight = .85
         let fancymath = (100/window.innerHeight)*10
         percentHeight = Math.min(fancymath, 1)
-        // console.log(fancymath)
         window.addEventListener("resize", () => {
             fancymath = (100/window.innerHeight)*10
             percentHeight = Math.max(.85, Math.min(fancymath, 1))

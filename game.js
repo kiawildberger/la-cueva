@@ -1,12 +1,16 @@
 let traits = {
-    claustrophobia: false,
+    claustrophobia: undefined,
     road: false,
-    treetop: false,
-    art: false,
-    hopefulCount: 0, // increment if player thoroughly investigates every possibility
+    treetop: undefined,
+    art: undefined,
+    pool: undefined
 }
 let temp = "";
-let unfinished = { title: "Continue", text: "This is the end of the playable area. Come back in a little bit?" }
+
+let poolExit = `<br><br>The wind blows; orange bay leaves twirl and settle underfoot. The later weeks of summer tend to produce the best sunsets, but this creek 
+went dark years ago as the trees grew into their arching trunks. Its geography damned it to darkness and you never knew it any other way.`
+
+let unfinished = { title: "Continue", text: "I haven't written this part yet. Come back in a little bit!" }
 
 let game = {
     start: {
@@ -42,14 +46,15 @@ let game = {
                     scene: 'road 2',
                     text: `Enjoying the evening, your feet fall on the asphalt with pleasant taps. Though you usually walked 
                     the creek with your friends, the road brings you back memories too. You used to know every corner, every turnout, and could see the whole thing 
-                    in your mind's eye, tip to tip.`
+                    in your mind's eye, tip to tip.`,
+                    action: function() { traits.claustrophobia = false; }
                 },
                 {
                     title: 'Start running',
                     scene: 'road 3',
                     text: `You start feeling the pressure of the incoming darkness, so you're anxious to <i>get</i> somewhere. The forest makes you feel small, especially 
                     in the dimming light, and you'd like to be back into open air before too long. You'd rather not have to worry about finding your way back
-                    in the complete darkness. You break into a gentle run.`,
+                    in the complete darkness. You break into a light jog.`,
                     action: function() { traits.claustrophobia = true; }
                 }
             ]]
@@ -122,12 +127,14 @@ let game = {
                     title: "Climb higher",
                     text: `Gathering yourself, you grab on to the next branch and bring yourself up, towards the flycatcher nest. You could do it with such ease all those years ago, but your time for climbing trees has
                     come and gone.`,
-                    scene: "treetop"
+                    scene: "treetop",
+                    action: () => traits.treetop = true
                 },
                 {
                     title: "Go down",
                     text: "Though this tree is full of memories, it's not what you're looking for. You return to the ground.",
-                    newsetidx: 0
+                    newsetidx: 0,
+                    action: () => traits.treetop = false
                 }
             ]
         ]
@@ -166,15 +173,14 @@ let game = {
                 title: "Return to the ground",
                 text: `Eyes damp, you dislodge yourself from the branch. You place your hands and feet on the familiar bumps and knots. A gentle wind blows your hair across your forehead, into your face. 
                 It's a beautiful evening to be anywhere, but especially here.`,
-                scene: "oak 2",
-                action: function() { traits.treetop = true; }
+                scene: "oak 2"
             }
         ]]
     },
     "downriver 2": {
         name: "downriver 2",
         text: `At the bottom of the gulley you're surprised to see a small pile of junk. You see a rusted-out propane tank, fast food containers, 
-        and the remains of some two-by-fours--the kind of boards you and your friends would nail to trees.`,
+        and the remains of some two-by-fours--the kind of boards you and your friends would nail to nearby trees.`,
         choiceset: [[
             unfinished
             // {
@@ -220,7 +226,7 @@ let game = {
             {
                 title: "Admire the art",
                 text: `There's someone's name written in big letters, a constellation splattered across the ceiling. How sacred it must be to imprint someone's being onto the walls of a drain pipe, 
-                beneath a deeply wooded road. How profane, to be erased by maintenance crews decennially.`,
+                beneath such a secluded road. How profane, to be erased by maintenance crews decennially.`,
                 scene: "tunnel 2",
                 action: () => {traits.art = true; }
             }
@@ -272,12 +278,113 @@ let game = {
     },
     "creek 4": {
         name: "creek 4",
-        text: `A stick cracks underfoot, and you wince as it echoes off the steep gulley walls, finally settling somewhere downstream. 
-        You've arrived at a pool of water, accumulated there from years of runoff and the occasional trickle from the creek. `, 
+        text: `A stick cracks underfoot, and you wince as the sound echoes off the steep gulley walls, finally settling somewhere downstream. 
+        You've arrived at a pool of water, accumulated there from years of runoff and the occasional trickle from the creek. In this forest, you're 
+        not surprised to see such stillness, and it comforts you to remember this spot. Earlier in the summer it would be higher, fuller, and occasionally 
+        it would be deep enough for a swim. You weren't finished growing; the water could fit two or three of you, quickly chasing off the dry summer heat. 
+        It was always a prelude, though, to the cool clay and earth that would settle into your skin, permeated into memories. It led you back here.`, 
         // there's something here...maybe chair-esque or the dam? something that speaks of recent* but decrepit human activity
         // chance for investigation and reminiscence...new trait probably too
         choiceset: [[
-            unfinished
+            {
+                title: "Stop at the pool",
+                text: `You remember how the clear stillness of the water would be interrupted by your feet and hands. It would cloud with sediment, stirred up 
+                from the bottom and tracked in on muddy skin. The water trickled down from the creek above, slowly enough to be ignored. The speed at which this forest 
+                moved was never particularly suited to the teenage mind.`,
+                newsetidx: 1,
+                action: () => traits.pool = true
+            },
+            {
+                title: "Move on",
+                text: `Back here, to the gulley with the cave. It wasn't the pool that drove you here. It was the pull of the depths, the natural allure of being surrounded by clay. 
+                You keep on, pushing through the silence of the forest. It closes behind you.`+poolExit,
+                scene: "cave base",
+                action: () => traits.pool = false
+            }
+        ],
+        [
+            {
+                title: "Taste the water",
+                text: `Before the water got muddied, the taste of this creek was fresher than any one of your parents' faucets. You would all drink together, 
+                cupping hands and slurping, unashamed in each other's presence. It's clear in your memory, clear as the small pool in front of you, and the water `+
+                "is even better than you remember. ${traits.art ? 'The constellations and personalities accrued in that pipe over the years must have enriched the water, you think.' : 'You take one handful and let the rest lie.'}"
+            },
+            {
+                title: "Look", // this bit is so edgy lmao
+                text: `Water skaters and oarsmen traverse the contours of your face. Your face ripples and distorts. You feel this pool of water, in a way that only you can after so many years, and wonder:
+                does <i>this</i> reflection recognize you? Your bathroom mirror sees you daily. It knows you, intimately, but this pool hasn't seen you since high school. You stare at yourself for a few moments.`
+            },
+            {
+                title: "Leave the pool",
+                text: `You ought to get moving if you're going to find your old hideout.`+poolExit,
+                scene: "cave base"
+            }
+        ]]
+    },
+    "cave base": {
+        text: 'This is it.',
+        textfn: () => {
+            // road: false
+
+            // claustrophobia: false
+            // treetop: false
+
+            // art: undefined,
+            // pool: undefined,
+            let initial = `Stones clatter and pebbles shift in the creek. There's fewer redwoods here, in the tan oaks' domain, but there's still evidence--branches skewn 
+            across the water, needles floating towards the ocean, into the sunset. `
+            let traitText = ""
+            if(traits.pool === true) {
+                traitText += `Might these needles have rested in that pool of water? Did they, too, see themselves in its glassy surface? `
+                if(traits.art === false) { // the Nature Appreciator
+                    traitText += `It was hard to miss the crude renditions of animals on those old walls 
+                    and your reflection in the pool. What a shame how, in such an undisturbed forest, human impact is so obvious.  `
+                }
+            }
+            if(traits.pool === false) {
+                traitText += `You see yourself in the needles--floating towards the end of a time, both of you helpless in choosing your destination. 
+                You, at least, can choose your path. `
+            }
+
+            if(traits.claustrophobia) {
+                traitText += `You often dreamed of floating into the sunset, arms spread and mouth open to scoop up the clouds. 
+                ${traits.treetop ? "You'd sit in the old oak tree, staring into the distance and imagining how it'd feel to see the world from above." : ""} 
+                You're reminded of the jog on the road earlier--if not elegant, it was exhiliarating to run${traits.treetop ? " towards the tree," : ","} like how you would imagine flying would feel. `
+                if(traits.treetop) { // the Uncontained Spirit
+                    traitText += `Maybe the magic hasn't faded.`
+                }
+            }
+            if(traits.treetop) {
+
+            }
+            let end = `<br><br>This is it. ${traits.road ? "Even though you took the road the old cave is unmistakeable," : "The old cave is unmistakable from the creek,"} unchanged from 
+            years past. Trees lean away from the obscured opening, animal trails avoid it. That must have been what drew you and your friends to it, its unapologetically forboding presence in the forest. 
+            Even now, as an adult, you feel obligated to not disturb its peace.`
+            return initial + traitText + end;
+        },
+        choiceset: [[
+            {
+                title: "Go up",
+                // this needs to be some serious As You Are imagery. 
+                // the transition into the cave needs to be brief and abrupt but before then its full steam ahead
+                text: `But you're here to see it again, whether or not it wants to be seen. How silly you were to think you might not be able to find the place where you spent 
+                your favorite July evenings and had some of your quietest moments. Of course you would, no matter how long it took you.<br><br>The sunlight now is close to fully faded. The warm 
+                summer air sits heavy in the creek. Here, you are surrounded--by the looming trees, by the untamed rock.`,
+                scene: "cave 1"
+            }
+        ]]
+    },
+    "cave 1": {
+        text: "The mouth of the cave invites you inward, downward.",
+        // some serious reconciliation happens here. the base of the cave is present-day character, the cave gets really into the past.
+        choiceset: [[
+            {
+                title: "<i>Has it changed?</i>",
+                text: "uh"
+            },
+            {
+                title: "<i>"
+            }
         ]]
     },
     "test": {

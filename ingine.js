@@ -64,7 +64,6 @@ class Ingine {
         // so this.current.setidx is 0 if there's only one set
         this.current.setidx = this.indexOrZero(this.current.setidx)
         // if(!this.current.choiceset[0] instanceof Array) this.current.choiceset = [this.current.choiceset] // if its not a 2-deep array, make it. (didn't work)
-        if(this.current.textfn) this.current.text = this.current.textfn()
         let choice = this.current.choiceset[this.current.setidx][idx]
         if(choice.newsetidx != undefined) this.current.setidx = choice.newsetidx;
         this.choicelist = this.current.choiceset[this.current.setidx]
@@ -77,6 +76,8 @@ class Ingine {
             if(this.current.textfn) this.current.text = this.current.textfn()
         }
         if(choice.action) choice.action.call(this); // i hope 'this' is preserved in these callbacks? ill have to see when it all works
+        // action needs to be called before the textfn so it can use any data updated in the previous
+        if(this.current.textfn) this.current.text = this.current.textfn()
         return choice;
     }
     indexOrZero(idx) { // setidx will commonly frequently be undefined
