@@ -2,6 +2,7 @@ let traits = {
     claustrophobia: undefined,
     road: false,
     treetop: undefined,
+    respect: null, // null didnt go. false BAD undefined OKAY true EPIC
     art: undefined,
     pool: undefined
 }
@@ -11,6 +12,7 @@ let poolExit = `<br><br>The wind blows; orange bay leaves twirl and settle under
 went dark years ago as the trees grew into their arching trunks. Its geography damned it to darkness and you never knew it any other way.`
 
 let unfinished = { title: "Continue", text: "I haven't written this part yet. Come back in a little bit!" }
+let credits = { title: "Credits", text: 'Written and coded by Kai.<br>Tested and beta read by [&nbsp&nbsp&nbsp&nbsp].'}
 
 let game = {
     start: {
@@ -79,7 +81,7 @@ let game = {
             {
                 title: "Head into the creek",
                 text: `With renewed excitement you make haste through the field of blue wild rye and the occasional shrub, landing in front of the fence that divides the sun-golden meadow from 
-                the dark forest.`,
+                the dark forest. You make your way towards the water.`,
                 scene: "downriver 2"
             },
             {
@@ -151,7 +153,7 @@ let game = {
             {
                 title: "Leave the tree and head into the creek",
                 text: `Through the sunkissed grass, you approach the fence that marks the border between the meadow and the forest. True to your memory, the canopy of trees hides an impossibly 
-                steep slope--it's a wonder you could navigate it as a teenager.`,
+                steep slope--it's a wonder you could navigate it as a teenager. You remember how you'd laugh at dirt on your faces as you walked upstream towards the cave.`,
                 scene: "downriver 2"
             }
         ]]
@@ -180,14 +182,56 @@ let game = {
     "downriver 2": {
         name: "downriver 2",
         text: `At the bottom of the gulley you're surprised to see a small pile of junk. You see a rusted-out propane tank, fast food containers, 
-        and the remains of some two-by-fours--the kind of boards you and your friends would nail to nearby trees.`,
+        and the remains of some two-by-fours--the kind of boards you and your friends would nail to nearby trees. They groan in the slight breeze; bays and tan oaks from high on the slope  
+        bend to meet each other over the creek. The road was quiet, but the creek's secluded gulley is silent.`,
         choiceset: [[
-            unfinished
-            // {
-            //     title: "Head into the creek",
-            //     text: "you go into the creek",
-            //     scene: "downriver 2"
-            // }
+            {
+                title: "Keep going",
+                text: "${traits.claustrophobia ? 'The stones and branches in the creek are difficult to navigate compared to the road.' : 'The softness of the soil is comforting compared to the hard asphalt.'}"+` You move 
+                with more intention through the forest.`,
+                scene: "downriver 1"
+            },
+            {
+                title: "Pick up a board",
+                text: `The old rotted wood is rough on your fingers, nails still sticking out of the sides. You can see where the board gave way and ripped from its
+                place on the tree. You're almost certain that your old friend group was responsible for this piece of wood.`,
+                newsetidx: 1
+            }
+        ],
+        [ // disrespect for personal history
+            {
+                title: "Toss it",
+                text: `The board leaves your hand and falls to the riverbed without ceremony. You're not a teenager anymore--you don't need to hold on to such insignificant symbols of your past. 
+                The wet splintering of the board on a stone does not leave any questions unanswered.`,
+                action: () => traits.respect = false,
+                scene: "downriver 1"
+            },
+            {
+                title: "Set it down",
+                text: `The old board deserved better.`,
+                action: () => traits.respect = undefined,
+                newsetidx: 0
+            },
+            {
+                title: "Keep it",
+                text: `It's not elegant to carry, but the memory it holds is massive. A step to the treehouse; a catalyst to freedom from whatever you believed you were 
+                tangled up in. The sun is almost fully set--if you don't find that cave you'll have something to show for your time here.`,
+                action: () => traits.respect = true,
+                newsetidx: 0
+            }
+        ]
+        ]
+    },
+    "downriver 1": { // to cave base from here
+        name: "downriver 1", // dont like the "carrying the board" line. can i revise? what does my beta reader think <3
+        text: "You're getting close--you can feel it. ${traits.respect ? `Carrying the board is awkward, but you couldn't just let it sit and rot.` : `Leaves whisper around you; bay nuts drop from high above like meteorites.`} "+
+        `The rocks begin to guide your eye upward towards the canopies, towards where the old cave must be. You know every rock and tree from here up to the mouth.`,
+        choiceset: [[
+            {
+                title: "Continue",
+                text: "The late summer evening deepens.",
+                scene: "cave base"
+            }
         ]]
     },
     "creek 1": {
@@ -206,7 +250,7 @@ let game = {
             },
             {
                 title: "Follow the creek",
-                text: "Moving towards the setting sun, you climb over rocks and trees fallen at improbable angles. Sword ferns and hedgenettles line the bank, reminiscent of wetter years.",
+                text: "Moving towards the setting sun, you climb over rocks and trees fallen at improbable angles. Sword ferns and hedgenettles line the bank, reminiscent of wetter years. This creek has seen better days--you remember them.",
                 scene: "creek 2"
             }
         ]]
@@ -238,33 +282,34 @@ let game = {
         choiceset: [[
             {
                 title: "Return to the creek",
-                text: "${(traits.art) ? 'The moment is over; you':'Ready to move on, you'} hop back down into the creek.",
+                text: "${(traits.art) ? 'The moment is over; you':'Ready to move on, you'} leave the tunnel for the open creek.",
                 scene: 'creek 2'
             }
         ]]
     },
     "creek 2": {
         name: "creek 2",
-        text: `Ahead, the creek bends to the right. A family of redwoods stands to the inside of the corner, tan oaks and bays nestled beside it, askew. 
+        text: `Ahead, it bends to the right. A family of redwoods stands to the inside of the corner, tan oaks and bays nestled beside it, askew. 
         You remember this spot, even through the fading light.`,
         choiceset: [[
             {
                 title: "Walk",
                 text: `It's a beautiful evening to be deep in the woods--even in a place as familiar as this. You know this creek, 
-                and you know it well. It's been years, but you can still recognize some of the rocks and fallen trees.`,
+                and you know it well. It's been years, but you can still recognize some of the rocks and fallen trees. New logs rot in the damp earth, 
+                but your memories come through.`,
                 scene: "creek 3"
             },
             {
                 title: "Hurry",
                 // not a fan of this (below)
-                text: "Conscious of the time of day, you adjust your pace, taking care not to hurt yourself on the scattered rocks and branches.",
+                text: "Conscious of the time of day, you adjust your pace, taking care not to hurt yourself on the scattered logs and branches, dark and soft and rotting in the .",
                 scene: "creek 4",
             }
         ]]
     },
     "creek 3": {
         name: "creek 3",
-        text: `Funny how contradictory nature can be. This forest is so full of life--but silently so. The younger trees lean on each other; sword ferns vibrate
+        text: `Funny how contradictory nature can be. This forest is so full of life--and death--but silently so. The younger trees lean on each other; sword ferns vibrate
         happily between the moist stones; hazelnuts find themselves in a tumble of leaves and leggy sprouts. It's all so rich with <i>character</i>, but at this moment 
         not a soul moves. Reaching towards you from the mess of outcroppings above, the weathered bay trees blot out the sky, blanketing you and the creek in darkness and 
         condemning everything below them to silence.`, // does this contribute to the Foreboding Vibe now?
@@ -276,7 +321,7 @@ let game = {
             }
         ]]
     },
-    "creek 4": {
+    "creek 4": { // pool. to cave base from here
         name: "creek 4",
         text: `A stick cracks underfoot, and you wince as the sound echoes off the steep gulley walls, finally settling somewhere downstream. 
         You've arrived at a pool of water, accumulated there from years of runoff and the occasional trickle from the creek. In this forest, you're 
@@ -289,7 +334,7 @@ let game = {
             {
                 title: "Stop at the pool",
                 text: `You remember how the clear stillness of the water would be interrupted by your feet and hands. It would cloud with sediment, stirred up 
-                from the bottom and tracked in on muddy skin. The water trickled down from the creek above, slowly enough to be ignored. The speed at which this forest 
+                from the bottom and tracked in on muddy skin. The water would trickle down from the creek above, slowly enough to be ignored. The speed at which this forest 
                 moved was never particularly suited to the teenage mind.`,
                 newsetidx: 1,
                 action: () => traits.pool = true
@@ -305,7 +350,7 @@ let game = {
         [
             {
                 title: "Taste the water",
-                text: `Before the water got muddied, the taste of this creek was fresher than any one of your parents' faucets. You would all drink together, 
+                text: `Before the water got muddied, the taste of this creek was fresher than any one of your friends' kitchen faucets. You would all drink together, 
                 cupping hands and slurping, unashamed in each other's presence. It's clear in your memory, clear as the small pool in front of you, and the water `+
                 "is even better than you remember. ${traits.art ? 'The constellations and personalities accrued in that pipe over the years must have enriched the water, you think.' : 'You take one handful and let the rest lie.'}"
             },
@@ -328,6 +373,7 @@ let game = {
 
             // claustrophobia: false
             // treetop: false
+            // disrespect: null
 
             // art: undefined,
             // pool: undefined,
@@ -337,8 +383,11 @@ let game = {
             if(traits.pool === true) {
                 traitText += `Might these needles have rested in that pool of water? Did they, too, see themselves in its glassy surface? `
                 if(traits.art === false) { // the Nature Appreciator
-                    traitText += `It was hard to miss the crude renditions of animals on those old walls 
-                    and your reflection in the pool. What a shame how, in such an undisturbed forest, human impact is so obvious.  `
+                    // replacing "it was hard to miss" : like the crude renditions, your reflection makes the forest ugly
+                    // traitText += `It was hard to miss the crude renditions of animals on those old walls 
+                    // and your reflection in the pool. What a shame how, in such an undisturbed forest, human impact is so obvious. `
+                    traitText += `Like the crude renditions of animals on those old walls, your reflection was so obviously alien to this forest. No matter 
+                    the summers spent here--you were still raised in a house. Your place is not within these steep gulley slopes. `
                 }
             }
             if(traits.pool === false) {
@@ -346,19 +395,28 @@ let game = {
                 You, at least, can choose your path. `
             }
 
-            if(traits.claustrophobia) {
+            if(traits.claustrophobia === false) {
                 traitText += `You often dreamed of floating into the sunset, arms spread and mouth open to scoop up the clouds. 
                 ${traits.treetop ? "You'd sit in the old oak tree, staring into the distance and imagining how it'd feel to see the world from above." : ""} 
                 You're reminded of the jog on the road earlier--if not elegant, it was exhiliarating to run${traits.treetop ? " towards the tree," : ","} like how you would imagine flying would feel. `
                 if(traits.treetop) { // the Uncontained Spirit
-                    traitText += `Maybe the magic hasn't faded.`
+                    traitText += `Maybe the magic hasn't faded. `
                 }
+            } else if(traits.claustrophobia) {
+                traitText += `How it must feel to escape the darkness of these woods, breaking out into a fading light. You only wish you could feel that 
+                kind of freedom again${traits.respect ? '' : '. '}`
             }
             if(traits.treetop) {
-
+                traitText += `But that evergreen live oak, named for its year-round foliage, never turns brown before its final throes. Its sun sets exactly when it means to. `
+                if(traits.respect === false) { // climbed it and chucked it. The Conqueror
+                    traitText += `It would have looked good with a treehouse spanning its branches. `
+                }
+            }
+            if(traits.respect === true) { // Kept the board. 
+                traitText += `${traits.claustrophobia ? "--l" : 'L'}ike that board might have. Brought to this creek with so much hope and potential, only to be carried seaward by winter rains. `
             }
             let end = `<br><br>This is it. ${traits.road ? "Even though you took the road the old cave is unmistakeable," : "The old cave is unmistakable from the creek,"} unchanged from 
-            years past. Trees lean away from the obscured opening, animal trails avoid it. That must have been what drew you and your friends to it, its unapologetically forboding presence in the forest. 
+            years past. Trees lean away from the obscured opening. Animal trails avoid it. That must have been what drew you and your friends to it, its unapologetically foreboding presence in the forest. 
             Even now, as an adult, you feel obligated to not disturb its peace.`
             return initial + traitText + end;
         },
@@ -375,18 +433,42 @@ let game = {
         ]]
     },
     "cave 1": {
-        text: "The mouth of the cave invites you inward, downward.",
+        text: `The mouth of the cave invites you inward, downward. Its walls still caked with mud, your old hideout has gone untouched for the years you've been gone. The ground here holds so many memories`+
+        "${traits.respect ? '--as does your board. Some' : ', some'} "+`cherished, some painful, others better forgotten.`,
         // some serious reconciliation happens here. the base of the cave is present-day character, the cave gets really into the past.
         choiceset: [[
             {
                 title: "<i>Has it changed?</i>",
-                text: "uh"
+                text: "No. It's you who changed.",
+                scene: "cave 2"
             },
             {
-                title: "<i>"
+                title: "<i>It's been a long time.</i>",
+                text: 'The depths of the earth feel time differently from you.',
+                scene: "cave 2",
+            },
+            {
+                title: "<i>It really is the same.</i>",
+                text: 'You wish the same for yourself.',
+                scene: "cave 2",
+            },
+            {
+                title: "<i>I never thought I'd come back.</i>",
+                text: 'And here you are.',
+                scene: "cave 2"
             }
         ]]
     },
+    "cave 2": {
+        name: "cave 2",
+        text: `Whenever you spent time in the cave it was about <i>something</i>. As you all grew up together, that clay and rock went through stages too--it started as a backdrop for your imaginations and 
+        finished in your blind spots. By your final summer in school you thought you had seen all there was to see. It took you how many years to come back here alone? How many summers, how many flurries of orange leaves?
+        You weren't even sure if you would find it. But these trees stand for generations--to them you are a shooting star, yet you doubted your own memory after a handful of times around the sun. Those summers you spent here 
+        `+"${traits.treetop ? 'in that tree and ':''}"+`in this cave made the days feel so long. You had so much time! You could do so much with your daylight. But the rest of your life raced towards you
+         `+"${traits.claustrophobia ? : 'just as you raced down that road' : ''}"+`, leaving the interminable trees far behind--until it comes time for you to soften and rot.`,
+        choiceset: [[{title: "Continue", text: "You're glad you came back.", scene:"cave 3"}]]
+    },
+    "cave 3": { name: "cave 3", text: '', choiceset: [[credits]]},
     "test": {
         text: "bad",
         textfn: function() {

@@ -88,12 +88,23 @@ const dynamicTemplate = template => {
 // console.log(dynamicTemplate(template1, o ))
 // all from https://gist.github.com/tmarshall/31e640e1fa80c597cc5bf78566b1274c
 
-let gamescene = {name:0}
+// oldsetidx is -1 if there's no alternate choicesets, otherwise its choicesetidx
+let gamescene = {name:0, chosen:[], oldsetidx:-1}, current;
+// setInterval(() => {
+//     id("debug").innerText = "["+gamescene.chosen.toString()+"]"
+// }, 500)
+
 function run(oldchoice = null) {
+    // oldchoice is the First Part of the text that gets displayed. parsedtext is the new stuff
     choicesElement.innerHTML = ''
-    let { current } = ingine;
+    current = ingine.current;
     let parsedtext = ingine.current.text.replace(/\t|\n/g, '')
+
+    // the chosen indicators don't work if i kick back to choiceset 0. it only works Down (from choiceset 0) and across scenes
+    gamescene.chosen = (current.name != gamescene.name || gamescene.oldsetidx > -1) ? [] : gamescene.chosen; // keep or reset chosen for the indicators
+
     if(current.name != gamescene.name) { // if the scene changed (so, most of the time)
+        gamescene.chosen = []
         if(oldchoice) {
             showText(dynamicTemplate(oldchoice + `<div class="spacer">\n</div>` + parsedtext))
         } else {
@@ -101,16 +112,22 @@ function run(oldchoice = null) {
         }
         // showText(dynamicTemplate(parsedtext))
     } else {
-        if(oldchoice) showText(dynamicTemplate(oldchoice))
+        if(oldchoice) showText(dynamicTemplate(oldchoice)) // 
     }
     choicesElement.style.opacity = 1
     choicesElement.style.pointerEvents = 'auto'
     ingine.choicelist.forEach(e => {
         let li = (ingine.choicelist.length === 1) ? document.createElement("p") : document.createElement('li');
         li.classList.add('choice')
-        li.innerText = e.title
+        li.innerHTML = e.title // or innerText but i wanted to have some italics
+        // if(gamescene.chosen.includes(ingine.choicelist.indexOf(e))) { li.style.color = "var(--choice-chosen)" }
+        if(e.newsetidx > -1) gamescene.chosen = []
         li.addEventListener("click", () => {
             // what needs to happen document-side when a choice is made?
+
+            if(!gamescene.chosen.includes(ingine.choicelist.indexOf(e))) { gamescene.chosen.push(ingine.choicelist.indexOf(e)) }
+            if(e.newsetidx > -1) { gamescene.oldsetidx = e.newsetidx } else { gamescene.oldsetidx = -1 }
+
             ingine.choose(ingine.choicelist.indexOf(e))
             choicesElement.style.opacity = 0
             choicesElement.style.pointerEvents = 'none'
@@ -120,11 +137,20 @@ function run(oldchoice = null) {
             // setTimeout(showText(dynamicTemplate(e.text)), choicedelay) // this is choice text
             // setTimeout(run, choicedelay+textdelay)
             setTimeout(() => {
-                // showText(dynamicTemplate(e.text))
+                // choice text is sent back to the function to be displayed along with the next scene text
                 run(e.text)
             }, choicedelay)
             gamescene.name = current.name
         })
+        if(current.name === "cave 3") {
+            li.style.opacity = 0
+            li.style.transition = "opacity 0.3s ease"
+            li.style.pointerEvents = 'none'
+            setTimeout(() => {
+                li.style.opacity = 1
+                li.style.pointerEvents = 'auto'
+            }, 15000)
+        }
         choicesElement.appendChild(li)
     })
 }

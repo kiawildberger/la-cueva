@@ -12,7 +12,7 @@
     this is what gets passed into the constructor function
 
     a scene might look like:
-    motel_lobby: {
+    "motel lobby": { // key for the area. should be unique
         name: "Motel Lobby",
 
         // the dynamic templates thing helps with this. they're not template Literals, but that's what they turn into, so that the properties can be accurate at the time
