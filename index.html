@@ -39,10 +39,11 @@
         }
         @media (max-width:1000px) {
             .afterpanel {display:none;}
-            .panel { margin:0 auto 0 1em !important; font-size:4em; }
+            .panel { margin:0 auto 0 0.5em !important; font-size:2em; }
             .title { transform:translate(50%, 60%); }
-            #textarea { font-size:2em; }
-            /* need to also make the choices nice on mobile. not sure how yet */
+            #textarea { font-size:1.5em !important; height:85% !important; }
+
+            /* i hate mobile. everyone should browse the web on normal computers. fuck phones */
         }
         @media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) { /* chrome for the -webkit-mask-image blur */
             .panel {
@@ -150,7 +151,7 @@
             min-width:500px;
             position:absolute;
             top:0;
-            left:calc(50% - 42% / 2);
+            left:calc(50% - 42% / 2); /* 8% ??? */
             z-index:-1;
             border-left:20px solid var(--borderColor);
             border-right:20px solid var(--borderColor);

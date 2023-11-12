@@ -465,7 +465,7 @@ let game = {
         finished in your blind spots. By your final summer in school you thought you had seen all there was to see. It took you how many years to come back here alone? How many summers, how many flurries of orange leaves?
         You weren't even sure if you would find it. But these trees stand for generations--to them you are a shooting star, yet you doubted your own memory after a handful of times around the sun. Those summers you spent here 
         `+"${traits.treetop ? 'in that tree and ':''}"+`in this cave made the days feel so long. You had so much time! You could do so much with your daylight. But the rest of your life raced towards you
-         `+"${traits.claustrophobia ? : 'just as you raced down that road' : ''}"+`, leaving the interminable trees far behind--until it comes time for you to soften and rot.`,
+         `+"${traits.claustrophobia ? 'just as you raced down that road' : ''}"+`, leaving the interminable trees far behind--until it comes time for you to soften and rot.`,
         choiceset: [[{title: "Continue", text: "You're glad you came back.", scene:"cave 3"}]]
     },
     "cave 3": { name: "cave 3", text: '', choiceset: [[credits]]},
