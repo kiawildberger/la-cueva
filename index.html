@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <head>
     <title>Cave Gulch, USA</title>
+    <meta type="description" content="a short interactive fiction">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -37,11 +39,22 @@
             font-family: "Celestial";
             src: url("./assets/Celestial\ Typeface.ttf");
         }
-        @media (max-width:1000px) {
-            .afterpanel {display:none;}
-            .panel { margin:0 auto 0 0.5em !important; font-size:2em; }
-            .title { transform:translate(50%, 60%); }
-            #textarea { font-size:1.5em !important; height:85% !important; }
+        :root {
+            --halfPadding: 8em;
+        }
+        @media (max-width:1200px) {
+            /* .afterpanel {display:none;} */
+            body { overflow-x:hidden !important; overflow-y:hidden !important; }
+            .panel { 
+                padding:0 0 0 8px !important;
+                width:fit-content !important;
+                margin:0 0 0 8px !important;
+            }
+            .title { font-size:4em !important; overflow-y:hidden; }
+            #textarea { 
+                min-width:4em !important;
+                width:calc(var(--halfPadding) * 1.8);
+            }
 
             /* i hate mobile. everyone should browse the web on normal computers. fuck phones */
         }
@@ -132,6 +145,7 @@
         }
         #textarea > p {
             animation:newtext 0.2s ease;
+            line-break: normal;
             /* overflow-anchor:none; */
         }
         #scrollAnchor {
@@ -292,8 +306,11 @@
             fancymath = (100/window.innerHeight)*10
             percentHeight = Math.max(.85, Math.min(fancymath, 1))
             document.querySelector('.panel').style.height = window.innerHeight*percentHeight+"px"
+            document.querySelector(":root").style.setProperty("--halfPadding", (window.innerWidth/2)+"px")
         })
         document.querySelector('.panel').style.height = window.innerHeight*percentHeight+"px";
+
+        document.querySelector(":root").style.setProperty("--halfPadding", (window.innerWidth/2)+"px")
     </script>
 
     <script src="./ingine.js" type="application/javascript"></script>
