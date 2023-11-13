@@ -42,8 +42,14 @@
         :root {
             --halfPadding: 8em;
         }
+        /*
+        for mobile:
+            performance sucks shit (the opacity filter is the Culprit)
+            it Does x wiggle slightly on my phone. something is too wide?
+            maybe pull the textarea width back a tiny bit? to line up with padding on left side
+            there's that stupid brown bit at the bottom past the image that hangs out
+        */
         @media (max-width:1200px) {
-            /* .afterpanel {display:none;} */
             body { overflow-x:hidden !important; overflow-y:hidden !important; }
             .panel { 
                 padding:0 0 0 8px !important;
@@ -65,6 +71,13 @@
                 /* background:var(--gradient); */
             }
         }
+
+        /* hopes and dreams:
+            put a border line on the textarea so the bottom cutoff of the text Exists (instead of just disappearing)
+            get the damb chosen/selected indicators working. or at least not as broken as it currently is
+            Beta Read Beta Read Beta Read. is it all consistent?
+        */
+
         body {
             --choice-primary:#aa8200;
             --choice-hover:color-mix(in srgb, black 20%, var(--choice-primary));

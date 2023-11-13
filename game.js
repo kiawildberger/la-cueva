@@ -12,7 +12,7 @@ let poolExit = `<br><br>The wind blows; orange bay leaves twirl and settle under
 went dark years ago as the trees grew into their arching trunks. Its geography damned it to darkness and you never knew it any other way.`
 
 let unfinished = { title: "Continue", text: "I haven't written this part yet. Come back in a little bit!" }
-let credits = { title: "Credits", text: 'Written and coded by Kai.<br>Tested and beta read by [&nbsp&nbsp&nbsp&nbsp].'}
+let credits = { title: "Credits", text: 'Written and coded by kai.<br>Tested and beta read by ----.'}
 
 let game = {
     start: {
@@ -398,7 +398,7 @@ let game = {
             if(traits.claustrophobia === false) {
                 traitText += `You often dreamed of floating into the sunset, arms spread and mouth open to scoop up the clouds. 
                 ${traits.treetop ? "You'd sit in the old oak tree, staring into the distance and imagining how it'd feel to see the world from above." : ""} 
-                You're reminded of the jog on the road earlier--if not elegant, it was exhiliarating to run${traits.treetop ? " towards the tree," : ","} like how you would imagine flying would feel. `
+                You're reminded of the moment on the road earlier--if not elegant, it was exhiliarating to spread out your arms walking${traits.treetop ? " towards the tree" : ""}, like how you would imagine flying would feel. `
                 if(traits.treetop) { // the Uncontained Spirit
                     traitText += `Maybe the magic hasn't faded. `
                 }
