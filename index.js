@@ -149,7 +149,7 @@ function run(oldchoice = null) {
             setTimeout(() => {
                 li.style.opacity = 1
                 li.style.pointerEvents = 'auto'
-            }, 8000)
+            }, 4000)
         }
         choicesElement.appendChild(li)
     })

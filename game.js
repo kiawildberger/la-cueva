@@ -302,7 +302,7 @@ let game = {
             {
                 title: "Hurry",
                 // not a fan of this (below)
-                text: "Conscious of the time of day, you adjust your pace, taking care not to hurt yourself on the scattered logs and branches, dark and soft and rotting in the .",
+                text: "Conscious of the time of day, you adjust your pace, taking care not to hurt yourself on the scattered logs and branches, dark and soft and rotting in the fading light.",
                 scene: "creek 4",
             }
         ]]
